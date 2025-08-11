@@ -1,0 +1,120 @@
+/* 清掉 Vite 模板的外框/內距，避免看起來像有遮罩把粒子蓋住 */
+#root {
+  max-width: none;
+  margin: 0;
+  padding: 0;
+  text-align: initial;
+}
+
+/* === 動畫：一般淡入上移 === */
+@keyframes fade-in-up {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 16px, 0) scale(0.98);
+  }
+
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+}
+
+.animate-fade-in-up {
+  animation: fade-in-up .6s cubic-bezier(.22, .61, .36, 1) both;
+}
+
+/* （保留）往左上飛走版本：現在用精準變形，這個留備用 */
+@keyframes fly-up-left {
+  0% {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) scale(1);
+    filter: drop-shadow(0 12px 36px rgba(0, 255, 255, .3));
+  }
+
+  60% {
+    opacity: .9;
+    transform: translate3d(-42vw, -36vh, 0) scale(.35);
+  }
+
+  100% {
+    opacity: 0;
+    transform: translate3d(-48vw, -48vh, 0) scale(.25);
+    filter: drop-shadow(0 6px 18px rgba(0, 255, 255, .15));
+  }
+}
+
+.fly-up-left {
+  animation: fly-up-left .9s cubic-bezier(.2, .7, .2, 1) forwards;
+  will-change: transform, opacity;
+  pointer-events: none;
+}
+
+/* scroll 提示小彈跳 */
+@keyframes soft-bounce {
+
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-6px);
+  }
+}
+
+.animate-bounce {
+  animation: soft-bounce 1.2s ease-in-out infinite;
+}
+
+/* Intro 區塊階層式淡入 */
+.intro-reveal {
+  opacity: 0;
+  transform: translate3d(0, 14px, 0);
+}
+
+.intro-reveal.show {
+  animation: fade-in-up .6s cubic-bezier(.22, .61, .36, 1) both;
+}
+
+.intro-reveal .intro-title,
+.intro-reveal .intro-sub,
+.intro-reveal .intro-desc,
+.intro-reveal .intro-cta {
+  animation: fade-in-up .6s cubic-bezier(.22, .61, .36, 1) both;
+}
+
+.intro-reveal .intro-title {
+  animation-delay: 0ms;
+}
+
+.intro-reveal .intro-sub {
+  animation-delay: 150ms;
+}
+
+.intro-reveal .intro-desc {
+  animation-delay: 300ms;
+}
+
+.intro-reveal .intro-cta {
+  animation-delay: 450ms;
+}
+
+/* 全站平滑滾動 */
+html {
+  scroll-behavior: smooth;
+}
+
+/* 無障礙：偏好減少動畫 → 停用 */
+@media (prefers-reduced-motion: reduce) {
+
+  .animate-fade-in-up,
+  .fly-up-left,
+  .animate-bounce,
+  .intro-reveal,
+  .intro-reveal .intro-title,
+  .intro-reveal .intro-sub,
+  .intro-reveal .intro-desc,
+  .intro-reveal .intro-cta {
+    animation: none !important;
+  }
+}
